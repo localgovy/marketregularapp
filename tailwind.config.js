@@ -1,0 +1,45 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}", "./providers/**/*.{js,jsx,ts,tsx}"],
+  presets: [require("nativewind/preset")],
+  theme: {
+    extend: {
+      colors: {
+        background: "#f4f1ea",
+        foreground: "#1c1916",
+        card: "#faf7f0",
+        "card-foreground": "#1c1916",
+        primary: "#3a6558",
+        "primary-foreground": "#f4f1ea",
+        secondary: "#ece7dc",
+        "secondary-foreground": "#1c1916",
+        muted: "#ece7dc",
+        "muted-foreground": "#5e5a53",
+        accent: "#ece7dc",
+        "accent-foreground": "#1c1916",
+        stamp: "#9e4a3e",
+        ticket: "#9e4a3e",
+        board: "#2c4a40",
+        chalk: "#f3eee4",
+        receipt: "#faf7f0",
+        "panel-find": "#3a6558",
+        destructive: "#9e4a3e",
+        border: "#ddd6c8",
+        input: "#ddd6c8",
+        ring: "#3a6558",
+      },
+      fontFamily: {
+        sans: ["SchibstedGrotesk_400Regular"],
+        heading: ["MonaSans_600SemiBold"],
+      },
+      borderRadius: {
+        DEFAULT: "2px",
+        sm: "2px",
+        md: "2px",
+        lg: "2px",
+        xl: "4px",
+      },
+    },
+  },
+  plugins: [],
+};

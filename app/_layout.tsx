@@ -1,56 +1,77 @@
-import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import "../global.css";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { Text, View } from "react-native";
+import { SchibstedGrotesk_400Regular, SchibstedGrotesk_600SemiBold } from "@expo-google-fonts/schibsted-grotesk";
+import { MonaSans_600SemiBold } from "@expo-google-fonts/mona-sans";
+import { BarlowCondensed_800ExtraBold } from "@expo-google-fonts/barlow-condensed";
+import { isSupabaseConfigured } from "@/lib/constants";
+import { AuthProvider } from "@/providers/auth";
+import { DayPlanProvider } from "@/providers/day-plan";
+import { DirectoryProvider } from "@/providers/directory";
+import { GeoProvider } from "@/providers/geo";
 
-import { useColorScheme } from '@/components/useColorScheme';
+export { ErrorBoundary } from "expo-router";
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: "(tabs)",
 };
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SchibstedGrotesk_400Regular,
+    SchibstedGrotesk_600SemiBold,
+    MonaSans_600SemiBold,
+    BarlowCondensed_800ExtraBold,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
+    if (loaded) SplashScreen.hideAsync();
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
+  if (!loaded) return null;
+
+  if (!isSupabaseConfigured()) {
+    return (
+      <View className="flex-1 items-center justify-center bg-background px-6">
+        <StatusBar style="dark" />
+        <Text className="font-heading text-2xl text-foreground">MarketRegular isn’t configured.</Text>
+        <Text className="mt-3 text-center text-base text-muted-foreground">
+          Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY, then reload.
+        </Text>
+      </View>
+    );
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <AuthProvider>
+      <DirectoryProvider>
+        <GeoProvider>
+          <DayPlanProvider>
+            <StatusBar style="light" />
+            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#f4f1ea" } }}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="markets/[slug]" />
+              <Stack.Screen name="vendors/[slug]" />
+              <Stack.Screen name="login" />
+              <Stack.Screen name="signup" />
+              <Stack.Screen name="onboarding" />
+              <Stack.Screen name="account" />
+              <Stack.Screen name="contact" />
+              <Stack.Screen name="auth/callback" />
+            </Stack>
+          </DayPlanProvider>
+        </GeoProvider>
+      </DirectoryProvider>
+    </AuthProvider>
   );
 }

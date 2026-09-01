@@ -1,37 +1,59 @@
 {
   "expo": {
-    "name": "marketregularapp",
+    "name": "MarketRegular",
     "slug": "marketregularapp",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "marketregularapp",
-    "userInterfaceStyle": "automatic",
+    "icon": "./assets/brand/marketregular-mr.png",
+    "scheme": "marketregular",
+    "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.marketregular.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "MarketRegular uses your location to mark when you are at a market and to sort halls by distance.",
+        "NSPhotoLibraryUsageDescription": "Attach photos from the market floor to a review.",
+        "NSCameraUsageDescription": "Take a photo of a stall to attach to a review."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#2c4a40",
+        "foregroundImage": "./assets/brand/marketregular-mr.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.marketregular.app",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "single",
+      "favicon": "./assets/brand/marketregular-mr.png"
     },
     "plugins": [
       "expo-router",
+      "expo-dev-client",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/brand/marketregular-wordmark.png",
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#f4f1ea"
+        }
+      ],
+      "expo-secure-store",
+      "expo-image",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "MarketRegular uses your location to mark when you are at a market and to sort halls by distance."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Attach photos from the market floor to a review.",
+          "cameraPermission": "Take a photo of a stall to attach to a review."
         }
       ]
     ],
