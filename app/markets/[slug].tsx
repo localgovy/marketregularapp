@@ -8,7 +8,7 @@ import { MarketMap } from "@/components/market-map";
 import { SaveButton } from "@/components/save-button";
 import { VendorRow } from "@/components/rows";
 import { Button } from "@/components/ui/button";
-import { getMarketBySlug } from "@/lib/data/catalog";
+import { getListingContact, getMarketBySlug } from "@/lib/data/catalog";
 import { hallFromMarket } from "@/lib/day-plan";
 import { externalHref } from "@/lib/format";
 import { toGeoMarket } from "@/lib/geo";
@@ -25,10 +25,12 @@ export default function MarketDetailScreen() {
   const { stalls } = useDirectory();
   const { setHall } = useDayPlan();
   const [market, setMarket] = useState<MarketDetail | null | undefined>(undefined);
+  const [phone, setPhone] = useState<string | null>(null);
 
   useEffect(() => {
     if (!slug) return;
     void getMarketBySlug(slug).then(setMarket);
+    void getListingContact("market", slug).then((contact) => setPhone(contact.phone));
   }, [slug]);
 
   if (market === undefined) {
@@ -94,9 +96,9 @@ export default function MarketDetailScreen() {
                 <Text className="text-sm text-primary">Instagram</Text>
               </Pressable>
             ) : null}
-            {market.phone ? (
-              <Pressable onPress={() => void Linking.openURL(`tel:${market.phone}`)}>
-                <Text className="text-sm text-primary">{market.phone}</Text>
+            {phone ? (
+              <Pressable onPress={() => void Linking.openURL(`tel:${phone}`)}>
+                <Text className="text-sm text-primary">{phone}</Text>
               </Pressable>
             ) : null}
           </View>
