@@ -895,6 +895,10 @@ export type Database = {
         Returns: boolean
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
+      get_listing_contact: {
+        Args: { p_kind: string; p_slug: string }
+        Returns: { phone: string | null; email: string | null }[]
+      }
       gettransactionid: { Args: never; Returns: unknown }
       is_admin: { Args: never; Returns: boolean }
       is_within_market: {
